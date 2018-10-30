@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/refresh"
+        android:title="刷新"
+        />
+    <item
+        android:id="@+id/search"
+        android:title="搜索"
+        />
+    <item
+        android:id="@+id/clearSearch"
+        android:title="清空搜索"
+        />
+
+    <item
+        android:id="@+id/sort"
+        android:title="选择排序（应用名称）"
+        />
+    <item
+        android:id="@+id/filter"
+        android:title="应用过滤（非系统应用）"
+        />
+</menu>
