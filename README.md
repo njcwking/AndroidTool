@@ -6,9 +6,9 @@
 * 查看应用包名、版本号、应用大小等信息
 * 分享应用（包含系统应用）
 
-### 下载安装
+### 预览
 
-下载链接 ：[AndroidTool.apk](./apk/AndroidTool.apk)
+下载链接 ：[AndroidTool.apk](https://www.pgyer.com/Alux)
 
 <img src="./apk/QRcode.png" alt="下载二维码" width="300"/>
 
