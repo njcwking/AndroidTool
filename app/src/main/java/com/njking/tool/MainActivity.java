@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,11 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * 应用列表页面
+ * @author
+ * @date 2018/10/30 14:20
+ */
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 默认未系统应用
      */
-    private int filter = 2;
+    private int filter = PackageUtils.TYPE_USER_PACKAGE;
 
     private AppRecyclerViewAdapter viewAdapter = null;
 
@@ -107,25 +109,7 @@ public class MainActivity extends AppCompatActivity {
      * 按筛选条件获得app列表
      */
     private void refresh() {
-        PackageManager pm = mContext.getPackageManager();
-        List<PackageInfo> appInfos = pm.getInstalledPackages(0);
-        List<PackageInfo> filterApps = new ArrayList<>();
-        for (PackageInfo appInfo : appInfos) {
-            if (!TextUtils.isEmpty(searchKey)) {
-                if (!(appInfo.applicationInfo.loadLabel(pm).toString().contains(searchKey) || appInfo.packageName.contains(searchKey))) {
-                    continue;
-                }
-            }
-            if ((appInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0 && filter == 2) {
-                // 未系统应用
-                filterApps.add(appInfo);
-            } else if ((appInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0 && filter == 1) {
-                //系统应用
-                filterApps.add(appInfo);
-            } else if (filter == 0) {
-                filterApps.add(appInfo);
-            }
-        }
+        List<PackageInfo> filterApps = PackageUtils.getAllPackage(mContext, searchKey, filter);
         switch (sort) {
             case 0:
                 Collections.sort(filterApps, new Comparator<PackageInfo>() {
