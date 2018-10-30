@@ -8,7 +8,7 @@
 
 #### 截图
 <center class="half">
-<img src="./screenshots/手机应用列表.jpg" width="300"/><img src="./screenshots/App详情.jpg" width="300"/>
+<img src="./screenshots/手机应用列表.jpg" width="400"/><img src="./screenshots/App详情.jpg" width="400"/>
 </center>
 
 ### 多说一句
