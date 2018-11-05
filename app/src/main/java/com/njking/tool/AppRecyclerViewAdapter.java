@@ -14,6 +14,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * @ClassName : AppRecyclerViewAdapter
  * @Author : 陈伟
@@ -82,17 +85,18 @@ public class AppRecyclerViewAdapter extends RecyclerView.Adapter<AppRecyclerView
 
     class AppViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView ivIcon;
-        private TextView tvAppName;
-        private TextView tvPackageName;
-        private TextView tvVersionName;
+        @BindView(R.id.ivIcon)
+        ImageView ivIcon;
+        @BindView(R.id.tvAppName)
+        TextView tvAppName;
+        @BindView(R.id.tvPackageName)
+        TextView tvPackageName;
+        @BindView(R.id.tvVersionName)
+        TextView tvVersionName;
 
         public AppViewHolder(View itemView) {
             super(itemView);
-            ivIcon = itemView.findViewById(R.id.ivIcon);
-            tvAppName = itemView.findViewById(R.id.tvAppName);
-            tvPackageName = itemView.findViewById(R.id.tvPackageName);
-            tvVersionName = itemView.findViewById(R.id.tvVersionName);
+            ButterKnife.bind(this, itemView);
         }
     }
 

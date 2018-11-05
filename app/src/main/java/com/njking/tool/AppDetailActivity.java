@@ -4,14 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -42,27 +43,41 @@ import io.reactivex.schedulers.Schedulers;
  * @author
  * @date 2018/10/29 11:48
  */
-public class AppDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class AppDetailActivity extends BaseActivity{
 
+    @BindView(R.id.tvAppName)
+    TextView tvAppName;
+    @BindView(R.id.tvPackageName)
+    TextView tvPackageName;
+    @BindView(R.id.tvVersionName)
+    TextView tvVersionName;
+    @BindView(R.id.tvVersionCode)
+    TextView tvVersionCode;
+    @BindView(R.id.tvFirstInstalledTime)
+    TextView tvFirstInstalledTime;
+    @BindView(R.id.tvLastUpdateTime)
+    TextView tvLastUpdateTime;
+    @BindView(R.id.tvAppSize)
+    TextView tvAppSize;
+    @BindView(R.id.tvAppLocation)
+    TextView tvAppLocation;
+    @BindView(R.id.tvMD5)
+    TextView tvMD5;
+    @BindView(R.id.btnCopyMD5)
+    Button btnCopyMD5;
+    @BindView(R.id.btnCopyMD5Without)
+    Button btnCopyMD5Without;
+    @BindView(R.id.tvSHA1)
+    TextView tvSHA1;
+    @BindView(R.id.btnCopySHA1)
+    Button btnCopySHA1;
+    @BindView(R.id.btnCopySHA1Without)
+    Button btnCopySHA1Without;
+    @BindView(R.id.tvPermissions)
+    TextView tvPermissions;
     private String appName;
 
     private String packageName;
-
-    private TextView tvAppName;
-    private TextView tvPackageName;
-    private TextView tvVersionName;
-    private TextView tvVersionCode;
-    private TextView tvFirstInstalledTime;
-    private TextView tvLastUpdateTime;
-    private TextView tvAppSize;
-    private TextView tvAppLocation;
-    private TextView tvPermissions;
-
-    private TextView tvMD5;
-
-    private TextView tvSHA1;
-
-    private Context mContext;
 
     public static Intent createIntent(Context context, String packageName, String appName) {
         Intent intent = new Intent(context, AppDetailActivity.class);
@@ -72,11 +87,12 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_app_detail);
-        mContext = this;
+    protected int getResourceLayout() {
+        return R.layout.activity_app_detail;
+    }
 
+    @Override
+    protected void initView() {
         packageName = getIntent().getStringExtra("packageName");
         appName = getIntent().getStringExtra("appName");
 
@@ -84,28 +100,12 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
-        tvAppName = findViewById(R.id.tvAppName);
-        tvPackageName = findViewById(R.id.tvPackageName);
-        tvVersionName = findViewById(R.id.tvVersionName);
-        tvVersionCode = findViewById(R.id.tvVersionCode);
-        tvFirstInstalledTime = findViewById(R.id.tvFirstInstalledTime);
-        tvLastUpdateTime = findViewById(R.id.tvLastUpdateTime);
-        tvAppSize = findViewById(R.id.tvAppSize);
-        tvAppLocation = findViewById(R.id.tvAppLocation);
-        tvPermissions = findViewById(R.id.tvPermissions);
-        tvMD5 = findViewById(R.id.tvMD5);
-        tvSHA1 = findViewById(R.id.tvSHA1);
         String MD5signature = PackageUtils.getAppMD5Signature(mContext, packageName);
         tvMD5.setText("应用M D 5：" + MD5signature);
         tvMD5.setTag(MD5signature);
         String sha1Signature = PackageUtils.getAppSHA1Signature(mContext, packageName);
         tvSHA1.setText("应用SHA1：" + sha1Signature);
         tvSHA1.setTag(sha1Signature);
-
-        findViewById(R.id.btnCopyMD5).setOnClickListener(this);
-        findViewById(R.id.btnCopyMD5Without).setOnClickListener(this);
-        findViewById(R.id.btnCopySHA1).setOnClickListener(this);
-        findViewById(R.id.btnCopySHA1Without).setOnClickListener(this);
 
         tvPackageName.setText("应用包名：" + packageName);
         HashMap<String, Object> appInfo = PackageUtils.getAppInfo(mContext, packageName, false);
@@ -134,7 +134,7 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
 
     private String getPermissionString(String pkgName) {
         StringBuffer sb = new StringBuffer();
-        String[] perms = PackageUtils.getAppPermission(mContext,pkgName);
+        String[] perms = PackageUtils.getAppPermission(mContext, pkgName);
         if (perms != null) {
             for (String permName : perms) {
                 sb.append(permName).append('\n');
@@ -199,8 +199,8 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
         return true;
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick({R.id.btnCopyMD5, R.id.btnCopyMD5Without, R.id.btnCopySHA1, R.id.btnCopySHA1Without})
+    public void onViewClicked(View v) {
         switch (v.getId()) {
             case R.id.btnCopyMD5: {
                 String md5Tag = (String) tvMD5.getTag();
@@ -231,6 +231,4 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
             break;
         }
     }
-
-
 }

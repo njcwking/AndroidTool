@@ -1,12 +1,8 @@
 package com.njking.tool;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,16 +15,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 应用列表页面
+ *
  * @author
  * @date 2018/10/30 14:20
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
-    private RecyclerView recyclerView;
-
-    private Context mContext;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
     private String searchKey;
 
@@ -41,23 +39,22 @@ public class MainActivity extends AppCompatActivity {
 
     private AppRecyclerViewAdapter viewAdapter = null;
 
-    @SuppressLint("WrongConstant")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected int getResourceLayout() {
+        return R.layout.activity_main;
+    }
 
+    @Override
+    protected void initView() {
         getSupportActionBar().setTitle("应用列表");
 
-        mContext = this;
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         viewAdapter = new AppRecyclerViewAdapter(this);
         viewAdapter.setOnItemClickListener(new AppRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 PackageInfo item = viewAdapter.getItem(position);
-                startActivity(AppDetailActivity.createIntent(mContext, item.packageName,item.applicationInfo.loadLabel(mContext.getPackageManager()).toString()));
+                startActivity(AppDetailActivity.createIntent(mContext, item.packageName, item.applicationInfo.loadLabel(mContext.getPackageManager()).toString()));
             }
         });
         recyclerView.setAdapter(viewAdapter);
@@ -199,5 +196,4 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
     }
-
 }
